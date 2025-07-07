@@ -452,6 +452,7 @@
                     excuseDisplay.style.justifyContent = 'center'; // スピナーを中央に
 
                     try {
+                        // Gemini APIを呼び出して言い訳を生成
                         let chatHistory = [];
                         const prompt = `${situation}というピンチなシチュエーションに対する、ユニークで面白い言い訳を30個、箇条書きで生成してください。各言い訳は短く、具体的な内容でお願いします。JSON形式で返してください。例: {"excuses": ["言い訳1", "言い訳2", ...]}`;
                         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
@@ -471,8 +472,10 @@
                                 }
                             }
                         };
-                        const apiKey = ""; // Canvasが自動で提供
+                        const apiKey = "AIzaSyBYVewr5AhWlMKWzH5pCGIvF_WnOiUFkKE"; // Canvasが自動で提供
                         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                        console.log("APIリクエスト送信中...", payload); // リクエスト内容をログ出力
 
                         const response = await fetch(apiUrl, {
                             method: 'POST',
@@ -480,31 +483,47 @@
                             body: JSON.stringify(payload)
                         });
 
+                        if (!response.ok) {
+                            const errorBody = await response.text();
+                            throw new Error(`HTTPエラー! ステータス: ${response.status}, レスポンス: ${errorBody}`);
+                        }
+
                         const result = await response.json();
-                        console.log("Gemini API Response:", result);
+                        console.log("Gemini API Response (Raw):", result); // 生のAPIレスポンスをログ出力
 
                         if (result.candidates && result.candidates.length > 0 &&
                             result.candidates[0].content && result.candidates[0].content.parts &&
                             result.candidates[0].content.parts.length > 0) {
                             const jsonString = result.candidates[0].content.parts[0].text;
-                            const parsedJson = JSON.parse(jsonString);
-                            const excuses = parsedJson.excuses;
+                            console.log("Gemini API Response (JSON String):", jsonString); // JSON文字列をログ出力
 
-                            if (excuses && excuses.length > 0) {
-                                const randomIndex = Math.floor(Math.random() * excuses.length);
-                                excuseText.textContent = excuses[randomIndex]; // ランダムな言い訳を表示
-                                excuseDisplay.style.justifyContent = 'flex-start'; // テキスト表示に合わせて調整
-                            } else {
-                                excuseText.textContent = '言い訳が見つかりませんでした。';
+                            try {
+                                const parsedJson = JSON.parse(jsonString);
+                                const excuses = parsedJson.excuses;
+
+                                if (excuses && excuses.length > 0) {
+                                    const randomIndex = Math.floor(Math.random() * excuses.length);
+                                    excuseText.textContent = excuses[randomIndex]; // ランダムな言い訳を表示
+                                    excuseDisplay.style.justifyContent = 'flex-start'; // テキスト表示に合わせて調整
+                                } else {
+                                    excuseText.textContent = '言い訳が見つかりませんでした。';
+                                    excuseDisplay.style.justifyContent = 'center';
+                                    console.warn("APIはJSONを返したが、excuses配列が空または見つからない。");
+                                }
+                            } catch (jsonParseError) {
+                                excuseText.textContent = 'APIからの応答の解析に失敗しました。';
                                 excuseDisplay.style.justifyContent = 'center';
+                                console.error('JSON解析エラー:', jsonParseError);
+                                console.error('解析に失敗したJSON文字列:', jsonString);
                             }
                         } else {
-                            excuseText.textContent = '言い訳の生成に失敗しました。もう一度お試しください。';
+                            excuseText.textContent = '言い訳の生成に失敗しました。APIからの応答が予期せぬ形式です。';
                             excuseDisplay.style.justifyContent = 'center';
+                            console.error('API応答の構造が不正:', result);
                         }
                     } catch (error) {
                         console.error('言い訳生成エラー:', error);
-                        excuseText.textContent = 'エラーが発生しました。インターネット接続を確認してください。';
+                        excuseText.textContent = `エラーが発生しました。詳細: ${error.message}`;
                         excuseDisplay.style.justifyContent = 'center';
                     } finally {
                         loadingSpinner.classList.add('hidden'); // ローディングスピナーを非表示
@@ -520,3 +539,4 @@
     </script>
 </body>
 </html>
+
