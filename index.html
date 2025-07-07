@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イワケの大冒険</title>
+    <!-- Tailwind CSS CDNを読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - M PLUS Rounded 1c と Mochiy Pop P One を読み込み -->
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全体共通スタイル */
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-y: auto;
+            padding: 1rem;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* タイトル画面スタイル */
+        .title-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            padding-top: 3rem;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .title-iwake-image {
+            width: 200px;
+            height: auto;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+        }
+        .start-button {
+            background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 3px solid #ffffff;
+            animation: bounce 1s infinite alternate;
+            font-family: 'Mochiy Pop P One', sans-serif;
+        }
+        .start-button:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border-color: #ffd700;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+
+        /* ピンチシチュエーション選択画面スタイル */
+        .pinch-selection-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .pinch-title {
+            font-family: 'Mochiy Pop P One', sans-serif;
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .situation-button {
+            background-image: linear-gradient(to right, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100px;
+        }
+        .situation-button:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .situation-button .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .situation-button .text {
+            font-size: 1.1rem;
+        }
+
+        /* 言い訳生成画面スタイル */
+        .excuse-generator-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 450px; /* イワケが見えるように調整 */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative; /* 背景イワケを重ねるため */
+        }
+        .excuse-background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/sM6DwnT.jpg'); /* イワケの画像を設定 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            opacity: 0.8;
+            z-index: 0;
+            border-radius: 20px; /* 親コンテナに合わせて角丸 */
+        }
+        .excuse-overlay-content {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.85); /* 半透明の背景 */
+            border-radius: 15px; /* 角丸 */
+            padding: 1.5rem;
+            width: calc(100% - 2rem); /* 両端のパディングを考慮 */
+            margin-top: 100px; /* イワケの顔を避けて下に配置 */
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .current-pinch-text {
+            font-family: 'Mochiy Pop P One', sans-serif;
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        .excuse-box {
+            background-color: #e0f2f7;
+            border: 2px solid #a7d9ed;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            word-break: break-word;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #6a11cb;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 戻るボタン */
+        .back-button {
+            background-color: #cccccc;
+            color: #333;
+            padding: 0.8rem 1.8rem;
+            border-radius: 9999px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            margin-top: 1.5rem;
+            max-width: 200px;
+        }
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* SNS共有ボタンのスタイル */
+        .social-share-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+        }
+        .social-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .social-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .social-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        .social-button.x-button {
+            background-color: #000000;
+        }
+        .social-button.line-button {
+            background-color: #00c300;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 640px) {
+            .title-container, .pinch-selection-container, .excuse-generator-container {
+                padding: 1.5rem;
+                max-width: 95%;
+            }
+            .title-iwake-image {
+                width: 150px;
+            }
+            .start-button {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+            .pinch-title {
+                font-size: 1.8rem;
+            }
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .situation-button {
+                min-height: 80px;
+                font-size: 1rem;
+            }
+            .situation-button .emoji {
+                font-size: 1.3rem;
+            }
+            .situation-button .text {
+                font-size: 1rem;
+            }
+            .excuse-overlay-content {
+                padding: 1rem;
+                margin-top: 80px; /* モバイルでのイワケ画像調整 */
+            }
+            .current-pinch-text {
+                font-size: 1.3rem;
+            }
+            .excuse-box {
+                font-size: 0.9rem;
+                min-height: 70px;
+            }
+            .back-button {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+            .social-share-buttons {
+                bottom: 15px;
+                right: 15px;
+                gap: 8px;
+            }
+            .social-button {
+                width: 45px;
+                height: 45px;
+            }
+            .social-button svg {
+                width: 22px;
+                height: 22px;
+            }
+            .social-button.line-button {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 全ての画面コンテンツをJavaScript変数として定義
+        const titleScreenHtml = `
+            <div class="title-container">
+                <img src="https://i.imgur.com/euu7Hqz.jpg" alt="イワケとタイトル" class="title-iwake-image">
+                <button id="startButton" class="start-button">言い訳を始める</button>
+            </div>
+        `;
+
+        const pinchSituationsHtml = `
+            <div class="pinch-selection-container">
+                <h1 class="pinch-title">ピンチなシチュエーションを選んでね！</h1>
+                <div class="button-grid" id="situationButtons">
+                    <!-- シチュエーションボタンはJavaScriptで動的に生成されます -->
+                </div>
+            </div>
+        `;
+
+        const excuseGeneratorHtml = `
+            <div class="excuse-generator-container">
+                <div class="excuse-background-image"></div>
+                <div class="excuse-overlay-content">
+                    <h2 id="currentPinch" class="current-pinch-text"></h2>
+                    <div id="excuseDisplay" class="excuse-box">
+                        <div class="loading-spinner hidden" id="loadingSpinner"></div>
+                        <span id="excuseText">言い訳を生成中...</span>
+                    </div>
+                    <button id="backToPinchSelectionButton" class="back-button">ピンチ選択に戻る</button>
+                </div>
+            </div>
+            <!-- SNS共有ボタンはbody直下に固定表示 -->
+            <div class="social-share-buttons">
+                <button id="shareXButton" class="social-button x-button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1nao33i r-rxz2fo r-17s6mgv r-o7ynqc r-64hb5y r-8kz0gk r-1efd50x r-5kkj8d r-f72cbv r-o8yidv r-13qz1uu" fill="white"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.814L4.938 21.75H1.62L9.826 10.79 1.62 2.25h7.804L13.09 8.84l5.154-6.59z"></path></g></svg>
+                </button>
+                <button id="shareLineButton" class="social-button line-button">
+                    LINE
+                </button>
+            </div>
+        `;
+
+        // アプリの現在の状態を管理する変数
+        let currentPinchSituation = '';
+
+        // 画面をレンダリングするメイン関数
+        function renderScreen(screenName, data = {}) {
+            document.body.innerHTML = ''; // 現在のコンテンツをクリア
+
+            if (screenName === 'title') {
+                document.body.innerHTML = titleScreenHtml;
+                document.getElementById('startButton').addEventListener('click', () => {
+                    renderScreen('pinchSelection');
+                });
+            } else if (screenName === 'pinchSelection') {
+                document.body.innerHTML = pinchSituationsHtml;
+                const situations = [
+                    { id: 1, emoji: '⏰', text: '返信遅れ気味' },
+                    { id: 2, emoji: '📝', text: '連絡抜け' },
+                    { id: 3, emoji: '⏱️', text: '時間ずれ' },
+                    { id: 4, emoji: '📤', text: 'データ未送信' },
+                    { id: 5, emoji: '📍', text: '場所違い' },
+                    { id: 6, emoji: '🗓️', text: '予定かぶり' },
+                    { id: 7, emoji: '📞', text: '電話出忘れ' },
+                    { id: 8, emoji: '🗓️', text: 'アポ忘れ' },
+                    { id: 9, emoji: '⏳', text: '締切勘違い' },
+                    { id: 10, emoji: '😴', text: '朝寝坊' }
+                ];
+                const situationButtonsContainer = document.getElementById('situationButtons');
+                situations.forEach(situation => {
+                    const button = document.createElement('button');
+                    button.className = 'situation-button';
+                    button.innerHTML = `
+                        <span class="emoji">${situation.emoji}</span>
+                        <span class="text">${situation.text}</span>
+                    `;
+                    button.addEventListener('click', () => {
+                        currentPinchSituation = situation.text; // 選択されたピンチを保存
+                        renderScreen('excuseGenerator', { situation: situation.text });
+                    });
+                    situationButtonsContainer.appendChild(button);
+                });
+            } else if (screenName === 'excuseGenerator') {
+                document.body.innerHTML = excuseGeneratorHtml;
+                const excuseDisplay = document.getElementById('excuseDisplay');
+                const excuseText = document.getElementById('excuseText');
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                const currentPinchTextElement = document.getElementById('currentPinch');
+                const shareXButton = document.getElementById('shareXButton');
+                const shareLineButton = document.getElementById('shareLineButton');
+                const backToPinchSelectionButton = document.getElementById('backToPinchSelectionButton');
+
+                // ピンチ状況を設定
+                if (data.situation) {
+                    currentPinchTextElement.textContent = `ピンチ: ${data.situation}`;
+                    generateExcuse(data.situation);
+                } else {
+                    currentPinchTextElement.textContent = 'ピンチが選択されていません';
+                    excuseText.textContent = '前の画面に戻ってピンチを選択してください。';
+                    loadingSpinner.classList.add('hidden');
+                }
+
+                // SNS共有機能 (新しいボタンに割り当て)
+                shareXButton.addEventListener('click', () => {
+                    const textToShare = excuseText.textContent;
+                    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}&hashtags=言い訳ジェネレーター,イワケの大冒険`;
+                    window.open(twitterUrl, '_blank');
+                });
+
+                shareLineButton.addEventListener('click', () => {
+                    const textToShare = excuseText.textContent;
+                    const lineUrl = `https://social-plugins.line.me/lineit/share?text=${encodeURIComponent(textToShare)}`;
+                    window.open(lineUrl, '_blank');
+                });
+
+                // 戻るボタン
+                backToPinchSelectionButton.addEventListener('click', () => {
+                    renderScreen('pinchSelection'); // ピンチ選択画面に戻る
+                });
+
+                // 言い訳を生成する関数
+                async function generateExcuse(situation) {
+                    excuseText.textContent = ''; // テキストをクリア
+                    loadingSpinner.classList.remove('hidden'); // ローディングスピナーを表示
+                    excuseDisplay.style.justifyContent = 'center'; // スピナーを中央に
+
+                    try {
+                        let chatHistory = [];
+                        const prompt = `${situation}というピンチなシチュエーションに対する、ユニークで面白い言い訳を30個、箇条書きで生成してください。各言い訳は短く、具体的な内容でお願いします。JSON形式で返してください。例: {"excuses": ["言い訳1", "言い訳2", ...]}`;
+                        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                        const payload = {
+                            contents: chatHistory,
+                            generationConfig: {
+                                responseMimeType: "application/json",
+                                responseSchema: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        "excuses": {
+                                            type: "ARRAY",
+                                            items: { "type": "STRING" }
+                                        }
+                                    },
+                                    "propertyOrdering": ["excuses"]
+                                }
+                            }
+                        };
+                        const apiKey = ""; // Canvasが自動で提供
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const result = await response.json();
+                        console.log("Gemini API Response:", result);
+
+                        if (result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const jsonString = result.candidates[0].content.parts[0].text;
+                            const parsedJson = JSON.parse(jsonString);
+                            const excuses = parsedJson.excuses;
+
+                            if (excuses && excuses.length > 0) {
+                                const randomIndex = Math.floor(Math.random() * excuses.length);
+                                excuseText.textContent = excuses[randomIndex]; // ランダムな言い訳を表示
+                                excuseDisplay.style.justifyContent = 'flex-start'; // テキスト表示に合わせて調整
+                            } else {
+                                excuseText.textContent = '言い訳が見つかりませんでした。';
+                                excuseDisplay.style.justifyContent = 'center';
+                            }
+                        } else {
+                            excuseText.textContent = '言い訳の生成に失敗しました。もう一度お試しください。';
+                            excuseDisplay.style.justifyContent = 'center';
+                        }
+                    } catch (error) {
+                        console.error('言い訳生成エラー:', error);
+                        excuseText.textContent = 'エラーが発生しました。インターネット接続を確認してください。';
+                        excuseDisplay.style.justifyContent = 'center';
+                    } finally {
+                        loadingSpinner.classList.add('hidden'); // ローディングスピナーを非表示
+                    }
+                }
+            }
+        }
+
+        // アプリ起動時にタイトル画面をレンダリング
+        document.addEventListener('DOMContentLoaded', () => {
+            renderScreen('title');
+        });
+    </script>
+</body>
+</html>
