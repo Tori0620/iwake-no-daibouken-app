@@ -12,7 +12,7 @@
         /* 全体共通スタイル */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            background-color: #f0f4f8;
+            background-color: var(--body-bg); /* CSS変数で背景色を設定 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,11 +22,12 @@
             padding: 1rem;
             box-sizing: border-box;
             position: relative;
+            transition: background-color 0.5s ease; /* 背景色の変化を滑らかに */
         }
 
         /* タイトル画面スタイル */
         .title-container {
-            background-color: #ffffff;
+            background-color: var(--container-bg); /* CSS変数で枠の背景色を設定 */
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             padding: 2rem;
@@ -42,10 +43,10 @@
             width: 200px;
             height: auto;
             margin-bottom: 0.5rem;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 0px 0px rgba(0, 0, 0, 0)); /* 影を削除または透明に */
         }
         .start-button {
-            background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+            background-image: linear-gradient(to right, var(--button-gradient-start) 0%, var(--button-gradient-end) 100%); /* CSS変数でグラデーションを設定 */
             color: white;
             padding: 1rem 2.5rem;
             border-radius: 9999px;
@@ -54,14 +55,14 @@
             cursor: pointer;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            border: 3px solid #ffffff;
+            border: 3px solid var(--button-border); /* CSS変数で枠線色を設定 */
             animation: bounce 1s infinite alternate;
             font-family: 'Mochiy Pop P One', sans-serif;
         }
         .start-button:hover {
             transform: translateY(-8px) scale(1.1);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            border-color: #ffd700;
+            border-color: var(--button-hover-border); /* CSS変数でホバー時の枠線色を設定 */
         }
         @keyframes bounce {
             0% { transform: translateY(0); }
@@ -70,7 +71,7 @@
 
         /* ピンチシチュエーション選択画面スタイル */
         .pinch-selection-container {
-            background-color: #ffffff;
+            background-color: var(--container-bg); /* CSS変数で枠の背景色を設定 */
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             padding: 2rem;
@@ -95,7 +96,7 @@
             margin-bottom: 2rem;
         }
         .situation-button {
-            background-image: linear-gradient(to right, #ff7e5f 0%, #feb47b 100%);
+            background-image: linear-gradient(to right, var(--situation-button-gradient-start) 0%, var(--situation-button-gradient-end) 100%); /* CSS変数でグラデーションを設定 */
             color: white;
             padding: 1rem;
             border-radius: 15px;
@@ -121,77 +122,107 @@
             margin-bottom: 0.5rem;
         }
         .situation-button .text {
-            font-size: 1.1rem;
+            font-size: 1.5rem; /* ピンチ選択ボタンのフォントサイズをさらに大きく */
         }
 
         /* 言い訳生成画面スタイル */
-        .excuse-generator-container {
-            background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+        .excuse-generator-wrapper {
             width: 100%;
-            max-width: 450px; /* イワケが見えるように調整 */
+            max-width: 600px; /* 全体の最大幅 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative; /* 背景イワケを重ねるため */
+            padding-top: 1rem; /* 上部に少し余白 */
         }
-        .excuse-background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://i.imgur.com/sM6DwnT.jpg'); /* イワケの画像を設定 */
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center center;
-            opacity: 0.8;
-            z-index: 0;
-            border-radius: 20px; /* 親コンテナに合わせて角丸 */
-        }
-        .excuse-overlay-content {
-            position: relative;
-            z-index: 1;
-            background-color: rgba(255, 255, 255, 0.85); /* 半透明の背景 */
-            border-radius: 15px; /* 角丸 */
-            padding: 1.5rem;
-            width: calc(100% - 2rem); /* 両端のパディングを考慮 */
-            margin-top: 100px; /* イワケの顔を避けて下に配置 */
-            margin-bottom: 1.5rem;
+        .current-pinch-container {
+            margin-bottom: 1rem; /* メインカードとの間隔 */
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.8); /* 少し半透明の背景 */
+            border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            z-index: 3; /* メインカードより手前に表示 */
         }
         .current-pinch-text {
             font-family: 'Mochiy Pop P One', sans-serif;
-            font-size: 1.5rem;
-            color: #555;
-            margin-bottom: 1rem;
+            font-size: 1.8rem; /* フォントサイズを調整 */
+            color: #333;
         }
-        .excuse-box {
-            background-color: #e0f2f7;
-            border: 2px solid #a7d9ed;
-            border-radius: 15px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            min-height: 80px;
+
+        .excuse-generator-main-card {
+            background-color: var(--container-bg); /* CSS変数で枠の背景色を設定 */
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem; /* パディングを調整 */
+            padding-top: 20px; /* イワケと吹き出しがはみ出る分の余白を調整 */
+            width: 100%;
+            max-width: 450px; /* カードの最大幅 */
+            min-height: 500px; /* カードの最小高さをさらに確保 */
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative; /* 子要素の絶対配置のため */
+            overflow: hidden; /* はみ出る要素を隠す（イワケははみ出させない） */
+            margin-top: -30px; /* ピンチコンテナと重なるように */
+        }
+
+        .iwake-speaking-character {
+            width: 250px; /* イワケ画像を調整 */
+            height: auto;
+            position: absolute; /* 絶対配置 */
+            bottom: 40px; /* イワケを20px上に移動 */
+            right: 0px; /* イワケをさらに左へ（カードの右端に近づける） */
+            z-index: 2; /* 吹き出しより手前に表示 */
+            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3)); /* 影を強調 */
+        }
+
+        .speech-bubble {
+            position: absolute; /* 絶対配置 */
+            background-color: rgba(255, 255, 255, 0.95); /* ほぼ不透明な白 */
+            border: 2px solid #a7d9ed; /* 薄い青の枠線 */
+            border-radius: 40px; /* 楕円にするためさらに大きく */
+            padding: 1rem; /* パディングを調整 */
+            width: 80%; /* カードに対する幅を調整 */
+            max-width: 350px; /* 読みやすさのための最大幅を調整 */
+            min-height: 120px; /* 最小高さを確保 */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1; /* イワケより奥 */
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            font-size: 1.1rem;
+
+            top: 40px; /* カードの上からの位置を調整 */
+            left: 10px; /* カードの左からの位置 */
+        }
+
+        .speech-bubble::before { /* 吹き出しのしっぽ */
+            content: '';
+            position: absolute;
+            bottom: -12px; /* 吹き出しの下線から外に出る */
+            right: 10px; /* 吹き出しの右寄りから出す */
+            transform: rotate(45deg); /* 右斜め下に向かう形 */
+            width: 20px; /* しっぽのサイズを調整 */
+            height: 20px; /* しっぽのサイズを調整 */
+            background-color: rgba(255, 255, 255, 0.95); /* 吹き出し本体と同じ色 */
+            border-bottom: 2px solid #a7d9ed; /* 吹き出し本体と同じ枠線 */
+            border-right: 2px solid #a7d9ed; /* 吹き出し本体と同じ枠線 */
+            z-index: 0; /* 吹き出しコンテンツより奥 */
+        }
+
+        .excuse-text-content { /* 言い訳とピンチテキストのラッパー */
+            width: 100%;
+        }
+        .excuse-box-text { /* 言い訳テキスト */
+            font-size: 1.1rem; /* フォントサイズを調整 */
             color: #333;
             line-height: 1.6;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
             word-break: break-word;
         }
         .loading-spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #6a11cb;
+            border-left-color: var(--button-gradient-start); /* ローディングスピナーの色も連動 */
             border-radius: 50%;
             width: 30px;
             height: 30px;
@@ -202,69 +233,77 @@
             to { transform: rotate(360deg); }
         }
 
-        /* 戻るボタン */
+        /* 戻るボタンとSNSボタンのグループ */
+        .action-buttons-bottom-group {
+            display: flex;
+            flex-direction: column; /* ボタンを縦に並べる */
+            align-items: center; /* 中央揃え */
+            gap: 0.5rem; /* ボタン間のスペース */
+            width: 100%;
+            position: absolute; /* カードの下部に固定 */
+            bottom: 1.5rem; /* ボタンの位置を調整 */
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: calc(100% - 3rem); /* カードのパディングを考慮 */
+        }
         .back-button {
-            background-color: #cccccc;
-            color: #333;
-            padding: 0.8rem 1.8rem;
-            border-radius: 9999px;
-            font-size: 1.1rem;
+            background-image: linear-gradient(to right, var(--button-gradient-start) 0%, var(--button-gradient-end) 100%); /* グラデーション背景 */
+            color: white;
+            padding: 0.6rem 1.5rem; /* ボタンのパディングを調整 */
+            border-radius: 9999px; /* 完全な丸角 */
+            font-size: 1.1rem; /* フォントサイズを調整 */
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border: none;
-            margin-top: 1.5rem;
-            max-width: 200px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を調整 */
+            border: 2px solid var(--button-border); /* 枠線色を設定 */
+            width: 100%; /* 親の幅に合わせる */
+            max-width: 200px; /* 最大幅 */
         }
         .back-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            border-color: var(--button-hover-border); /* ホバー時の枠線色 */
         }
-
-        /* SNS共有ボタンのスタイル */
-        .social-share-buttons {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 10;
-        }
-        .social-button {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .share-buttons-row {
             display: flex;
             justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 0.5rem; /* 戻るボタンとの間隔 */
         }
-        .social-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        .social-button svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
-        .social-button.x-button {
-            background-color: #000000;
-        }
-        .social-button.line-button {
-            background-color: #00c300;
-            font-size: 1.5rem;
+        .share-action-button {
+            padding: 0.3rem 0.6rem; /* ボタンのパディングをさらに小さく */
+            border-radius: 9999px; /* 完全な丸角 */
+            font-size: 0.65rem; /* フォントサイズをさらに小さく */
             font-weight: bold;
-            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を調整 */
+            border: none; /* 固定色なのでボーダーなし */
+            flex-grow: 1; /* 横に広がる */
+            max-width: 100px; /* ボタンの最大幅を調整 */
+            color: white; /* テキスト色を白に */
+            height: 30px; /* 高さを固定して低くする */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .share-action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        .share-x-button {
+            background-color: #000000; /* Xのブランドカラー */
+        }
+        .share-line-button {
+            background-color: #00c300; /* LINEのブランドカラー */
+        }
+
 
         /* レスポンシブデザイン */
         @media (max-width: 640px) {
-            .title-container, .pinch-selection-container, .excuse-generator-container {
+            .title-container, .pinch-selection-container, .excuse-generator-main-card {
                 padding: 1.5rem;
                 max-width: 95%;
             }
@@ -289,38 +328,53 @@
                 font-size: 1.3rem;
             }
             .situation-button .text {
-                font-size: 1rem;
+                font-size: 1.2rem; /* モバイルでのフォントサイズ調整 */
             }
-            .excuse-overlay-content {
-                padding: 1rem;
-                margin-top: 80px; /* モバイルでのイワケ画像調整 */
+            .current-pinch-container {
+                margin-bottom: 0.8rem;
+                padding: 0.4rem 0.8rem;
             }
             .current-pinch-text {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
-            .excuse-box {
+            .excuse-generator-main-card {
+                padding-top: 50px; /* モバイルでのイワケ食い込み調整 */
+                min-height: 380px; /* モバイルでの最小高さを確保 */
+            }
+            .iwake-speaking-character {
+                width: 160px; /* モバイルでのイワケ画像サイズ */
+                bottom: 20px; /* モバイルでの位置調整 */
+                right: -5px;
+            }
+            .speech-bubble {
+                padding: 0.8rem;
+                width: 85%;
+                max-width: 220px;
+                min-height: 90px;
+                top: 20px;
+                left: 10px;
+            }
+            .speech-bubble::before {
+                bottom: -10px; /* モバイルでのしっぽ位置調整 */
+                right: 20px; /* モバイルでのしっぽ位置調整 */
+                width: 15px;
+                height: 15px;
+            }
+            .excuse-box-text {
                 font-size: 0.9rem;
-                min-height: 70px;
             }
-            .back-button {
-                padding: 0.7rem 1.5rem;
-                font-size: 1rem;
+            .action-buttons-bottom-group {
+                gap: 0.5rem;
+                bottom: 0.8rem;
+                padding-top: 0.8rem;
             }
-            .social-share-buttons {
-                bottom: 15px;
-                right: 15px;
-                gap: 8px;
+            .back-button, .share-action-button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+                max-width: 100px;
             }
-            .social-button {
-                width: 45px;
-                height: 45px;
-            }
-            .social-button svg {
-                width: 22px;
-                height: 22px;
-            }
-            .social-button.line-button {
-                font-size: 1.3rem;
+            .share-action-button {
+                height: 25px; /* モバイルでの高さを調整 */
             }
         }
     </style>
@@ -330,7 +384,7 @@
         // 全ての画面コンテンツをJavaScript変数として定義
         const titleScreenHtml = `
             <div class="title-container">
-                <img src="https://i.imgur.com/euu7Hqz.jpg" alt="イワケとタイトル" class="title-iwake-image">
+                <img src="https://i.imgur.com/0aMMhVq.png" alt="イワケとタイトル" class="title-iwake-image">
                 <button id="startButton" class="start-button">言い訳を始める</button>
             </div>
         `;
@@ -345,34 +399,93 @@
         `;
 
         const excuseGeneratorHtml = `
-            <div class="excuse-generator-container">
-                <div class="excuse-background-image"></div>
-                <div class="excuse-overlay-content">
+            <div class="excuse-generator-wrapper">
+                <div id="currentPinchContainer" class="current-pinch-container">
                     <h2 id="currentPinch" class="current-pinch-text"></h2>
-                    <div id="excuseDisplay" class="excuse-box">
-                        <div class="loading-spinner hidden" id="loadingSpinner"></div>
-                        <span id="excuseText">言い訳を生成中...</span>
-                    </div>
-                    <button id="backToPinchSelectionButton" class="back-button">ピンチ選択に戻る</button>
                 </div>
-            </div>
-            <!-- SNS共有ボタンはbody直下に固定表示 -->
-            <div class="social-share-buttons">
-                <button id="shareXButton" class="social-button x-button">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1nao33i r-rxz2fo r-17s6mgv r-o7ynqc r-64hb5y r-8kz0gk r-1efd50x r-5kkj8d r-f72cbv r-o8yidv r-13qz1uu" fill="white"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.814L4.938 21.75H1.62L9.826 10.79 1.62 2.25h7.804L13.09 8.84l5.154-6.59z"></path></g></svg>
-                </button>
-                <button id="shareLineButton" class="social-button line-button">
-                    LINE
-                </button>
+                <div class="excuse-generator-main-card">
+                    <img src="https://i.imgur.com/OiU2ZfC.png" alt="話しているイワケ" class="iwake-speaking-character">
+                    <div class="speech-bubble">
+                        <div id="excuseDisplay" class="excuse-text-content">
+                            <div class="loading-spinner hidden" id="loadingSpinner"></div>
+                            <span id="excuseText" class="excuse-box-text">言い訳を生成中...</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons-bottom-group">
+                        <button id="backToPinchSelectionButton" class="back-button">ピンチ選択に戻る</button>
+                        <div class="share-buttons-row">
+                            <button id="shareXButton" class="share-action-button share-x-button">Xに投稿</button>
+                            <button id="shareLineButton" class="share-action-button share-line-button">LINEに投稿</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         `;
 
         // アプリの現在の状態を管理する変数
         let currentPinchSituation = '';
 
+        // 定義されたカラーパレット
+        const colorPalettes = [
+            {
+                bodyBg: '#f0f4f8', // Light Gray
+                containerBg: '#ffffff', // White
+                buttonGradient: ['#6a11cb', '#2575fc'], // Purple to Blue
+                buttonBorder: '#ffffff', // White
+                buttonHoverBorder: '#ffd700', // Gold
+                situationButtonGradient: ['#ff7e5f', '#feb47b'] // Orange to Peach
+            },
+            {
+                bodyBg: '#ffebee', // Light Pink
+                containerBg: '#fffafa', // Slightly off-white pink
+                buttonGradient: ['#ff6b6b', '#ff4d4d'], // Red to Red-Orange
+                buttonBorder: '#ffffff',
+                buttonHoverBorder: '#ffcc00', // Yellow
+                situationButtonGradient: ['#8e24aa', '#d81b60'] // Purple to Pink
+            },
+            {
+                bodyBg: '#e3f2fd', // Light Blue
+                containerBg: '#f0f8ff', // Alice Blue
+                buttonGradient: ['#2196f3', '#03a9f4'], // Blue to Light Blue
+                buttonBorder: '#ffffff',
+                buttonHoverBorder: '#ff9800', // Orange
+                situationButtonGradient: ['#4caf50', '#8bc34a'] // Green to Light Green
+            },
+            {
+                bodyBg: '#fffde7', // Light Yellow
+                containerBg: '#fffff0', // Ivory
+                buttonGradient: ['#ffc107', '#ffeb3b'], // Yellow to Light Yellow
+                buttonBorder: '#ffffff',
+                buttonHoverBorder: '#8d6e63', // Brown
+                situationButtonGradient: ['#ff9800', '#ff5722'] // Orange to Deep Orange
+            },
+            {
+                bodyBg: '#e8f5e9', // Light Green
+                containerBg: '#f5fff5', // Mint Cream
+                buttonGradient: ['#4caf50', '#8bc34a'], // Green to Light Green
+                buttonBorder: '#ffffff',
+                buttonHoverBorder: '#fbc02d', // Dark Yellow
+                situationButtonGradient: ['#673ab7', '#5e35b1'] // Deep Purple
+            }
+        ];
+
+        // ランダムな色を適用する関数
+        function applyRandomColors() {
+            const randomPalette = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+            document.documentElement.style.setProperty('--body-bg', randomPalette.bodyBg);
+            document.documentElement.style.setProperty('--container-bg', randomPalette.containerBg); // 新しいCSS変数
+            document.documentElement.style.setProperty('--button-gradient-start', randomPalette.buttonGradient[0]);
+            document.documentElement.style.setProperty('--button-gradient-end', randomPalette.buttonGradient[1]);
+            document.documentElement.style.setProperty('--button-border', randomPalette.buttonBorder);
+            document.documentElement.style.setProperty('--button-hover-border', randomPalette.buttonHoverBorder);
+            document.documentElement.style.setProperty('--situation-button-gradient-start', randomPalette.situationButtonGradient[0]);
+            document.documentElement.style.setProperty('--situation-button-gradient-end', randomPalette.situationButtonGradient[1]);
+        }
+
         // 画面をレンダリングするメイン関数
         function renderScreen(screenName, data = {}) {
             document.body.innerHTML = ''; // 現在のコンテンツをクリア
+            applyRandomColors(); // 画面をレンダリングするたびに色をランダムに変更
 
             if (screenName === 'title') {
                 document.body.innerHTML = titleScreenHtml;
@@ -472,7 +585,7 @@
                                 }
                             }
                         };
-                        const apiKey = "AIzaSyBYVewr5AhWlMKWzH5pCGIvF_WnOiUFkKE"; // Canvasが自動で提供
+                        const apiKey = ""; // Canvasが自動で提供
                         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                         console.log("APIリクエスト送信中...", payload); // リクエスト内容をログ出力
@@ -539,4 +652,3 @@
     </script>
 </body>
 </html>
-
