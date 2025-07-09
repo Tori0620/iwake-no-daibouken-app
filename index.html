@@ -164,13 +164,14 @@
             position: relative; /* 子要素の絶対配置のため */
             overflow: hidden; /* はみ出る要素を隠す（イワケははみ出させない） */
             margin-top: -30px; /* ピンチコンテナと重なるように */
+            justify-content: space-between; /* コンテンツとボタンを上下に配置 */
         }
 
         .iwake-speaking-character {
             width: 250px; /* イワケ画像を調整 */
             height: auto;
             position: absolute; /* 絶対配置 */
-            bottom: 60px; /* イワケをさらに上に移動 */
+            bottom: 50px; /* イワケを30px上方に移動 */
             right: 0px; /* イワケをさらに左へ（カードの右端に近づける） */
             z-index: 2; /* 吹き出しより手前に表示 */
             filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3)); /* 影を強調 */
@@ -193,7 +194,7 @@
             align-items: center;
             justify-content: center;
 
-            top: 50px; /* カードの上からの位置を調整 */
+            top: 40px; /* カードの上からの位置を調整 */
             left: 10px; /* カードの左からの位置 */
         }
 
@@ -240,11 +241,11 @@
             align-items: center; /* 中央揃え */
             gap: 0.5rem; /* ボタン間のスペース */
             width: 100%;
-            position: absolute; /* カードの下部に固定 */
-            bottom: 1.5rem; /* ボタンの位置を調整 */
-            left: 50%;
-            transform: translateX(-50%);
-            max-width: calc(100% - 3rem); /* カードのパディングを考慮 */
+            margin-top: auto; /* 親のFlexboxの最後に配置 */
+            margin-left: auto; /* 中央揃え */
+            margin-right: auto; /* 中央揃え */
+            z-index: 100; /* 最前面に表示 */
+            max-width: 250px; /* ボタン群全体の最大幅 */
         }
         .back-button {
             background-image: linear-gradient(to right, var(--button-gradient-start) 0%, var(--button-gradient-end) 100%); /* グラデーション背景 */
@@ -343,16 +344,16 @@
             }
             .iwake-speaking-character {
                 width: 160px; /* モバイルでのイワケ画像サイズ */
-                bottom: 50px; /* モバイルでの位置調整 */
-                right: 10px; /* モバイルで少し左に移動 */
+                bottom: 60px; /* モバイルでの位置調整 */
+                right: 0px; /* モバイルで少し左に移動 */
             }
             .speech-bubble {
                 padding: 0.8rem;
                 width: 85%;
                 max-width: 220px;
                 min-height: 90px;
-                top: 20px;
-                left: 20px; /* モバイルで少し右に移動 */
+                top: 10px; /* モバイルで少し上へ移動 */
+                left: 10px; /* モバイルで少し右に移動 */
             }
             .speech-bubble::before {
                 bottom: -10px; /* モバイルでのしっぽ位置調整 */
@@ -498,7 +499,7 @@
                     { id: 1, emoji: '⏰', text: '返信遅れ気味' },
                     { id: 2, emoji: '📝', text: '連絡抜け' },
                     { id: 3, emoji: '⏱️', text: '時間ずれ' },
-                    { id: 4, emoji: ' ', text: 'データ未送信' },
+                    { id: 4, emoji: '📤', text: 'データ未送信' },
                     { id: 5, emoji: '📍', text: '場所違い' },
                     { id: 6, emoji: '🗓️', text: '予定かぶり' },
                     { id: 7, emoji: '📞', text: '電話出忘れ' },
@@ -585,7 +586,7 @@
                                 }
                             }
                         };
-                        const apiKey = "AIzaSyDM5dowUgUUnqTKatvH1-9KJL4kbtw05fc"; // Canvasが自動で提供
+                        const apiKey = "AIzaSyDM5dowUgUUnqTKatvH1-9KJL4kbtw05fc"; // ここに、ご自身のGoogle Cloudで取得したAPIキーを貼り付けてください。
                         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                         console.log("APIリクエスト送信中...", payload); // リクエスト内容をログ出力
@@ -652,4 +653,3 @@
     </script>
 </body>
 </html>
-
