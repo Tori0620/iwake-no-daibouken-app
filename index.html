@@ -170,7 +170,7 @@
             width: 250px; /* イワケ画像を調整 */
             height: auto;
             position: absolute; /* 絶対配置 */
-            bottom: 80px; /* イワケを調整 */
+            bottom: 60px; /* イワケをさらに上に移動 */
             right: 0px; /* イワケをさらに左へ（カードの右端に近づける） */
             z-index: 2; /* 吹き出しより手前に表示 */
             filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3)); /* 影を強調 */
@@ -193,7 +193,7 @@
             align-items: center;
             justify-content: center;
 
-            top: 40px; /* カードの上からの位置を調整 */
+            top: 50px; /* カードの上からの位置を調整 */
             left: 10px; /* カードの左からの位置 */
         }
 
@@ -343,8 +343,8 @@
             }
             .iwake-speaking-character {
                 width: 160px; /* モバイルでのイワケ画像サイズ */
-                bottom: 40px; /* モバイルでの位置調整 */
-                right: -5px;
+                bottom: 50px; /* モバイルでの位置調整 */
+                right: 10px; /* モバイルで少し左に移動 */
             }
             .speech-bubble {
                 padding: 0.8rem;
@@ -352,11 +352,11 @@
                 max-width: 220px;
                 min-height: 90px;
                 top: 20px;
-                left: 10px;
+                left: 20px; /* モバイルで少し右に移動 */
             }
             .speech-bubble::before {
                 bottom: -10px; /* モバイルでのしっぽ位置調整 */
-                right: 20px; /* モバイルでのしっぽ位置調整 */
+                right: 10px; /* モバイルでのしっぽ位置調整 */
                 width: 15px;
                 height: 15px;
             }
@@ -498,7 +498,7 @@
                     { id: 1, emoji: '⏰', text: '返信遅れ気味' },
                     { id: 2, emoji: '📝', text: '連絡抜け' },
                     { id: 3, emoji: '⏱️', text: '時間ずれ' },
-                    { id: 4, emoji: '📤', text: 'データ未送信' },
+                    { id: 4, emoji: ' ', text: 'データ未送信' },
                     { id: 5, emoji: '📍', text: '場所違い' },
                     { id: 6, emoji: '🗓️', text: '予定かぶり' },
                     { id: 7, emoji: '📞', text: '電話出忘れ' },
@@ -567,7 +567,7 @@
                     try {
                         // Gemini APIを呼び出して言い訳を生成
                         let chatHistory = [];
-                        const prompt = `${situation}というピンチなシチュエーションに対する、ユニークで面白い言い訳を30個、箇条書きで生成してください。各言い訳は短く、具体的な内容でお願いします。JSON形式で返してください。例: {"excuses": ["言い訳1", "言い訳2", ...]}`;
+                        const prompt = `${situation}というピンチなシチュエーションに対する、申し訳なさをユニークな方法で自己防衛しようとする、ちょっと不器用で愛嬌のある返答を30個、箇条書きで生成してください。各返答は短く、具体的な内容でお願いします。JSON形式で返してください。例: {"excuses": ["不器用な返答1", "不器用な返答2", "..."]}`;
                         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                         const payload = {
                             contents: chatHistory,
@@ -585,7 +585,7 @@
                                 }
                             }
                         };
-                        const apiKey = "AIzaSyAqHSUleoFvSiTmlBcr5Gj-rEbRpq_NiWY"; // Canvasが自動で提供
+                        const apiKey = "AIzaSyDM5dowUgUUnqTKatvH1-9KJL4kbtw05fc"; // Canvasが自動で提供
                         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                         console.log("APIリクエスト送信中...", payload); // リクエスト内容をログ出力
@@ -652,3 +652,4 @@
     </script>
 </body>
 </html>
+
