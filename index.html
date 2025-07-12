@@ -171,7 +171,7 @@
             width: 250px; /* イワケ画像を調整 */
             height: auto;
             position: absolute; /* 絶対配置 */
-            bottom: 50px; /* イワケを30px上方に移動 */
+            bottom: 60px; /* イワケをさらに上に移動 */
             right: 0px; /* イワケをさらに左へ（カードの右端に近づける） */
             z-index: 2; /* 吹き出しより手前に表示 */
             filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3)); /* 影を強調 */
@@ -194,8 +194,8 @@
             align-items: center;
             justify-content: center;
 
-            top: 40px; /* カードの上からの位置を調整 */
-            left: 10px; /* カードの左からの位置 */
+            top: 50px; /* カードの上からの位置を調整 */
+            left: 10px; /* カードの左からの位置を調整 */
         }
 
         .speech-bubble::before { /* 吹き出しのしっぽ */
@@ -352,8 +352,8 @@
                 width: 85%;
                 max-width: 220px;
                 min-height: 90px;
-                top: 10px; /* モバイルで少し上へ移動 */
-                left: 10px; /* モバイルで少し右に移動 */
+                top: 30px; /* モバイルで少し下へ移動 */
+                left: 20px; /* モバイルで少し右に移動 */
             }
             .speech-bubble::before {
                 bottom: -10px; /* モバイルでのしっぽ位置調整 */
@@ -540,116 +540,3 @@
                     excuseText.textContent = '前の画面に戻ってピンチを選択してください。';
                     loadingSpinner.classList.add('hidden');
                 }
-
-                // SNS共有機能 (新しいボタンに割り当て)
-                shareXButton.addEventListener('click', () => {
-                    const textToShare = excuseText.textContent;
-                    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}&hashtags=言い訳ジェネレーター,イワケの大冒険`;
-                    window.open(twitterUrl, '_blank');
-                });
-
-                shareLineButton.addEventListener('click', () => {
-                    const textToShare = excuseText.textContent;
-                    const lineUrl = `https://social-plugins.line.me/lineit/share?text=${encodeURIComponent(textToShare)}`;
-                    window.open(lineUrl, '_blank');
-                });
-
-                // 戻るボタン
-                backToPinchSelectionButton.addEventListener('click', () => {
-                    renderScreen('pinchSelection'); // ピンチ選択画面に戻る
-                });
-
-                // 言い訳を生成する関数
-                async function generateExcuse(situation) {
-                    excuseText.textContent = ''; // テキストをクリア
-                    loadingSpinner.classList.remove('hidden'); // ローディングスピナーを表示
-                    excuseDisplay.style.justifyContent = 'center'; // スピナーを中央に
-
-                    try {
-                        // Gemini APIを呼び出して言い訳を生成
-                        let chatHistory = [];
-                        const prompt = `${situation}というピンチなシチュエーションに対する、申し訳なさをユニークな方法で自己防衛しようとする、ちょっと不器用で愛嬌のある返答を30個、箇条書きで生成してください。各返答は短く、具体的な内容でお願いします。JSON形式で返してください。例: {"excuses": ["不器用な返答1", "不器用な返答2", "..."]}`;
-                        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                        const payload = {
-                            contents: chatHistory,
-                            generationConfig: {
-                                responseMimeType: "application/json",
-                                responseSchema: {
-                                    type: "OBJECT",
-                                    properties: {
-                                        "excuses": {
-                                            type: "ARRAY",
-                                            items: { "type": "STRING" }
-                                        }
-                                    },
-                                    "propertyOrdering": ["excuses"]
-                                }
-                            }
-                        };
-                        const apiKey = "AIzaSyDM5dowUgUUnqTKatvH1-9KJL4kbtw05fc"; // ここに、ご自身のGoogle Cloudで取得したAPIキーを貼り付けてください。
-                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                        console.log("APIリクエスト送信中...", payload); // リクエスト内容をログ出力
-
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (!response.ok) {
-                            const errorBody = await response.text();
-                            throw new Error(`HTTPエラー! ステータス: ${response.status}, レスポンス: ${errorBody}`);
-                        }
-
-                        const result = await response.json();
-                        console.log("Gemini API Response (Raw):", result); // 生のAPIレスポンスをログ出力
-
-                        if (result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const jsonString = result.candidates[0].content.parts[0].text;
-                            console.log("Gemini API Response (JSON String):", jsonString); // JSON文字列をログ出力
-
-                            try {
-                                const parsedJson = JSON.parse(jsonString);
-                                const excuses = parsedJson.excuses;
-
-                                if (excuses && excuses.length > 0) {
-                                    const randomIndex = Math.floor(Math.random() * excuses.length);
-                                    excuseText.textContent = excuses[randomIndex]; // ランダムな言い訳を表示
-                                    excuseDisplay.style.justifyContent = 'flex-start'; // テキスト表示に合わせて調整
-                                } else {
-                                    excuseText.textContent = '言い訳が見つかりませんでした。';
-                                    excuseDisplay.style.justifyContent = 'center';
-                                    console.warn("APIはJSONを返したが、excuses配列が空または見つからない。");
-                                }
-                            } catch (jsonParseError) {
-                                excuseText.textContent = 'APIからの応答の解析に失敗しました。';
-                                excuseDisplay.style.justifyContent = 'center';
-                                console.error('JSON解析エラー:', jsonParseError);
-                                console.error('解析に失敗したJSON文字列:', jsonString);
-                            }
-                        } else {
-                            excuseText.textContent = '言い訳の生成に失敗しました。APIからの応答が予期せぬ形式です。';
-                            excuseDisplay.style.justifyContent = 'center';
-                            console.error('API応答の構造が不正:', result);
-                        }
-                    } catch (error) {
-                        console.error('言い訳生成エラー:', error);
-                        excuseText.textContent = `エラーが発生しました。詳細: ${error.message}`;
-                        excuseDisplay.style.justifyContent = 'center';
-                    } finally {
-                        loadingSpinner.classList.add('hidden'); // ローディングスピナーを非表示
-                    }
-                }
-            }
-        }
-
-        // アプリ起動時にタイトル画面をレンダリング
-        document.addEventListener('DOMContentLoaded', () => {
-            renderScreen('title');
-        });
-    </script>
-</body>
-</html>
