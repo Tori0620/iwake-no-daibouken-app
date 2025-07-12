@@ -213,7 +213,7 @@
             z-index: 3; /* メインカードより手前に表示 */
         }
         .current-pinch-text {
-            font-family: 'Mochiy Pop P One', sans-serif;
+            font-family: 'Mochiy+Pop+P+One', sans-serif;
             font-size: 1.8rem; /* フォントサイズを調整 */
             color: #333;
         }
@@ -431,7 +431,7 @@
             }
             .iwake-speaking-character {
                 width: 160px; /* モバイルでのイワケ画像サイズ */
-                bottom: 60px; /* モバイルでの位置調整 */
+                bottom: 40px; /* モバイルでの位置調整 */
                 right: 0px; /* モバイルで少し左に移動 */
             }
             .speech-bubble {
@@ -640,7 +640,7 @@
                         currentPinchSituation = inputText.trim();
                         renderScreen('excuseGenerator', { situation: inputText.trim() });
                     } else {
-                        // alert('ピンチな状況を入力してください！'); // アラートではなく、アプリ内メッセージに変更することも可能
+                        // アラートではなく、アプリ内メッセージに変更することも可能
                         const currentInputPinchContainer = document.querySelector('.input-pinch-container');
                         const messageBox = document.createElement('div');
                         messageBox.className = 'text-red-500 text-sm mt-2';
