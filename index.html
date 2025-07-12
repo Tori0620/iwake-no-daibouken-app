@@ -124,6 +124,75 @@
         .situation-button .text {
             font-size: 1.5rem; /* ピンチ選択ボタンのフォントサイズをさらに大きく */
         }
+        .back-to-title-button {
+            background-color: #cccccc; /* 戻るボタンの色 */
+            color: #333;
+            padding: 0.8rem 1.8rem;
+            border-radius: 9999px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            margin-top: 2rem; /* 上の要素からの間隔 */
+            width: 100%;
+            max-width: 250px;
+        }
+        .back-to-title-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ピンチ入力画面スタイル */
+        .input-pinch-container {
+            background-color: var(--container-bg); /* CSS変数で枠の背景色を設定 */
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-pinch-title {
+            font-family: 'Mochiy Pop P One', sans-serif;
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .pinch-input-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            margin-bottom: 1.5rem;
+            resize: vertical; /* 縦方向のみリサイズ可能に */
+        }
+        .generate-input-excuse-button {
+            background-image: linear-gradient(to right, var(--button-gradient-start) 0%, var(--button-gradient-end) 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            margin-bottom: 1rem;
+            width: 100%;
+            max-width: 250px;
+        }
+        .generate-input-excuse-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
 
         /* 言い訳生成画面スタイル */
         .excuse-generator-wrapper {
@@ -171,7 +240,7 @@
             width: 250px; /* イワケ画像を調整 */
             height: auto;
             position: absolute; /* 絶対配置 */
-            bottom: 60px; /* イワケをさらに上に移動 */
+            bottom: 80px; /* イワケを調整 */
             right: 0px; /* イワケをさらに左へ（カードの右端に近づける） */
             z-index: 2; /* 吹き出しより手前に表示 */
             filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3)); /* 影を強調 */
@@ -195,7 +264,7 @@
             justify-content: center;
 
             top: 50px; /* カードの上からの位置を調整 */
-            left: 10px; /* カードの左からの位置を調整 */
+            left: 10px; /* カードの左からの位置 */
         }
 
         .speech-bubble::before { /* 吹き出しのしっぽ */
@@ -247,6 +316,12 @@
             z-index: 100; /* 最前面に表示 */
             max-width: 250px; /* ボタン群全体の最大幅 */
         }
+        .navigation-buttons-row { /* 新しいナビゲーションボタンの行 */
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
         .back-button {
             background-image: linear-gradient(to right, var(--button-gradient-start) 0%, var(--button-gradient-end) 100%); /* グラデーション背景 */
             color: white;
@@ -258,7 +333,7 @@
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を調整 */
             border: 2px solid var(--button-border); /* 枠線色を設定 */
-            width: 100%; /* 親の幅に合わせる */
+            flex-grow: 1; /* 横に広がる */
             max-width: 200px; /* 最大幅 */
         }
         .back-button:hover {
@@ -304,7 +379,7 @@
 
         /* レスポンシブデザイン */
         @media (max-width: 640px) {
-            .title-container, .pinch-selection-container, .excuse-generator-main-card {
+            .title-container, .pinch-selection-container, .excuse-generator-main-card, .input-pinch-container {
                 padding: 1.5rem;
                 max-width: 95%;
             }
@@ -330,6 +405,18 @@
             }
             .situation-button .text {
                 font-size: 1.2rem; /* モバイルでのフォントサイズ調整 */
+            }
+            .input-pinch-title {
+                font-size: 1.5rem;
+            }
+            .pinch-input-textarea {
+                min-height: 100px;
+                font-size: 1rem;
+            }
+            .generate-input-excuse-button {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+                max-width: 200px;
             }
             .current-pinch-container {
                 margin-bottom: 0.8rem;
@@ -369,6 +456,10 @@
                 bottom: 0.8rem;
                 padding-top: 0.8rem;
             }
+            .navigation-buttons-row { /* モバイルでのナビゲーションボタンの行 */
+                flex-direction: row; /* 横並び維持 */
+                gap: 0.5rem;
+            }
             .back-button, .share-action-button {
                 padding: 0.4rem 0.8rem;
                 font-size: 0.7rem;
@@ -386,7 +477,8 @@
         const titleScreenHtml = `
             <div class="title-container">
                 <img src="https://i.imgur.com/0aMMhVq.png" alt="イワケとタイトル" class="title-iwake-image">
-                <button id="startButton" class="start-button">言い訳を始める</button>
+                <button id="inputExcuseButton" class="start-button">言い訳を入力する</button>
+                <button id="selectExcuseButton" class="start-button mt-4">言い訳を選ぶ</button>
             </div>
         `;
 
@@ -396,6 +488,16 @@
                 <div class="button-grid" id="situationButtons">
                     <!-- シチュエーションボタンはJavaScriptで動的に生成されます -->
                 </div>
+                <button id="backToTitleFromPinchSelectionButton" class="back-to-title-button">タイトルに戻る</button>
+            </div>
+        `;
+
+        const inputPinchHtml = `
+            <div class="input-pinch-container">
+                <h1 class="input-pinch-title">ピンチな状況を入力してね！</h1>
+                <textarea id="pinchInputTextarea" class="pinch-input-textarea" placeholder="例：寝坊しました..."></textarea>
+                <button id="generateInputExcuseButton" class="generate-input-excuse-button">生成する</button>
+                <button id="backToTitleFromInputButton" class="back-button">タイトルに戻る</button>
             </div>
         `;
 
@@ -413,7 +515,10 @@
                         </div>
                     </div>
                     <div class="action-buttons-bottom-group">
-                        <button id="backToPinchSelectionButton" class="back-button">ピンチ選択に戻る</button>
+                        <div class="navigation-buttons-row">
+                            <button id="backToPinchSelectionButton" class="back-button">選ぶに戻る</button>
+                            <button id="goToInputPinchButton" class="back-button">入力する</button>
+                        </div>
                         <div class="share-buttons-row">
                             <button id="shareXButton" class="share-action-button share-x-button">Xに投稿</button>
                             <button id="shareLineButton" class="share-action-button share-line-button">LINEに投稿</button>
@@ -490,7 +595,10 @@
 
             if (screenName === 'title') {
                 document.body.innerHTML = titleScreenHtml;
-                document.getElementById('startButton').addEventListener('click', () => {
+                document.getElementById('inputExcuseButton').addEventListener('click', () => {
+                    renderScreen('inputPinch');
+                });
+                document.getElementById('selectExcuseButton').addEventListener('click', () => {
                     renderScreen('pinchSelection');
                 });
             } else if (screenName === 'pinchSelection') {
@@ -521,7 +629,33 @@
                     });
                     situationButtonsContainer.appendChild(button);
                 });
-            } else if (screenName === 'excuseGenerator') {
+                document.getElementById('backToTitleFromPinchSelectionButton').addEventListener('click', () => {
+                    renderScreen('title');
+                });
+            } else if (screenName === 'inputPinch') {
+                document.body.innerHTML = inputPinchHtml;
+                document.getElementById('generateInputExcuseButton').addEventListener('click', () => {
+                    const inputText = document.getElementById('pinchInputTextarea').value;
+                    if (inputText.trim() !== '') {
+                        currentPinchSituation = inputText.trim();
+                        renderScreen('excuseGenerator', { situation: inputText.trim() });
+                    } else {
+                        // alert('ピンチな状況を入力してください！'); // アラートではなく、アプリ内メッセージに変更することも可能
+                        const currentInputPinchContainer = document.querySelector('.input-pinch-container');
+                        const messageBox = document.createElement('div');
+                        messageBox.className = 'text-red-500 text-sm mt-2';
+                        messageBox.textContent = 'ピンチな状況を入力してください！';
+                        currentInputPinchContainer.appendChild(messageBox);
+                        setTimeout(() => {
+                            messageBox.remove();
+                        }, 3000);
+                    }
+                });
+                document.getElementById('backToTitleFromInputButton').addEventListener('click', () => {
+                    renderScreen('title');
+                });
+            }
+            else if (screenName === 'excuseGenerator') {
                 document.body.innerHTML = excuseGeneratorHtml;
                 const excuseDisplay = document.getElementById('excuseDisplay');
                 const excuseText = document.getElementById('excuseText');
@@ -530,6 +664,7 @@
                 const shareXButton = document.getElementById('shareXButton');
                 const shareLineButton = document.getElementById('shareLineButton');
                 const backToPinchSelectionButton = document.getElementById('backToPinchSelectionButton');
+                const goToInputPinchButton = document.getElementById('goToInputPinchButton'); // 新しいボタン
 
                 // ピンチ状況を設定
                 if (data.situation) {
@@ -540,3 +675,121 @@
                     excuseText.textContent = '前の画面に戻ってピンチを選択してください。';
                     loadingSpinner.classList.add('hidden');
                 }
+
+                // SNS共有機能 (新しいボタンに割り当て)
+                shareXButton.addEventListener('click', () => {
+                    const textToShare = excuseText.textContent;
+                    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}&hashtags=言い訳ジェネレーター,イワケの大冒険`;
+                    window.open(twitterUrl, '_blank');
+                });
+
+                shareLineButton.addEventListener('click', () => {
+                    const textToShare = excuseText.textContent;
+                    const lineUrl = `https://social-plugins.line.me/lineit/share?text=${encodeURIComponent(textToShare)}`;
+                    window.open(lineUrl, '_blank');
+                });
+
+                // 戻るボタン
+                backToPinchSelectionButton.addEventListener('click', () => {
+                    renderScreen('pinchSelection'); // ピンチ選択画面に戻る
+                });
+
+                // 新しい「ピンチを入力する」ボタン
+                goToInputPinchButton.addEventListener('click', () => {
+                    renderScreen('inputPinch'); // ピンチ入力画面に遷移
+                });
+
+                // 言い訳を生成する関数
+                async function generateExcuse(situation) {
+                    excuseText.textContent = ''; // テキストをクリア
+                    loadingSpinner.classList.remove('hidden'); // ローディングスピナーを表示
+                    excuseDisplay.style.justifyContent = 'center'; // スピナーを中央に
+
+                    try {
+                        // Gemini APIを呼び出して言い訳を生成
+                        let chatHistory = [];
+                        const prompt = `${situation}というピンチなシチュエーションに対する、申し訳なさをユニークな方法で自己防衛しようとする、ちょっと不器用で愛嬌のある返答を30個、箇条書きで生成してください。各返答は短く、具体的な内容でお願いします。JSON形式で返してください。例: {"excuses": ["不器用な返答1", "不器用な返答2", "..."]}`;
+                        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                        const payload = {
+                            contents: chatHistory,
+                            generationConfig: {
+                                responseMimeType: "application/json",
+                                responseSchema: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        "excuses": {
+                                            type: "ARRAY",
+                                            items: { "type": "STRING" }
+                                        }
+                                    },
+                                    "propertyOrdering": ["excuses"]
+                                }
+                            }
+                        };
+                        const apiKey = "AIzaSyDM5dowUgUUnqTKatvH1-9KJL4kbtw05fc"; // ここに、ご自身のGoogle Cloudで取得したAPIキーを貼り付けてください。
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                        console.log("APIリクエスト送信中...", payload); // リクエスト内容をログ出力
+
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            const errorBody = await response.text();
+                            throw new Error(`HTTPエラー! ステータス: ${response.status}, レスポンス: ${errorBody}`);
+                        }
+
+                        const result = await response.json();
+                        console.log("Gemini API Response (Raw):", result); // 生のAPIレスポンスをログ出力
+
+                        if (result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const jsonString = result.candidates[0].content.parts[0].text;
+                            console.log("Gemini API Response (JSON String):", jsonString); // JSON文字列をログ出力
+
+                            try {
+                                const parsedJson = JSON.parse(jsonString);
+                                const excuses = parsedJson.excuses;
+
+                                if (excuses && excuses.length > 0) {
+                                    const randomIndex = Math.floor(Math.random() * excuses.length);
+                                    excuseText.textContent = excuses[randomIndex]; // ランダムな言い訳を表示
+                                    excuseDisplay.style.justifyContent = 'flex-start'; // テキスト表示に合わせて調整
+                                } else {
+                                    excuseText.textContent = '言い訳が見つかりませんでした。';
+                                    excuseDisplay.style.justifyContent = 'center';
+                                    console.warn("APIはJSONを返したが、excuses配列が空または見つからない。");
+                                }
+                            } catch (jsonParseError) {
+                                excuseText.textContent = 'APIからの応答の解析に失敗しました。';
+                                excuseDisplay.style.justifyContent = 'center';
+                                console.error('JSON解析エラー:', jsonParseError);
+                                console.error('解析に失敗したJSON文字列:', jsonString);
+                            }
+                        } else {
+                            excuseText.textContent = '言い訳の生成に失敗しました。APIからの応答が予期せぬ形式です。';
+                            excuseDisplay.style.justifyContent = 'center';
+                            console.error('API応答の構造が不正:', result);
+                        }
+                    } catch (error) {
+                        console.error('言い訳生成エラー:', error);
+                        excuseText.textContent = `エラーが発生しました。詳細: ${error.message}`;
+                        excuseDisplay.style.justifyContent = 'center';
+                    } finally {
+                        loadingSpinner.classList.add('hidden'); // ローディングスピナーを非表示
+                    }
+                }
+            }
+        }
+
+        // アプリ起動時にタイトル画面をレンダリング
+        document.addEventListener('DOMContentLoaded', () => {
+            renderScreen('title');
+        });
+    </script>
+</body>
+</html>
